@@ -39,7 +39,7 @@ The hostname of the controller is always taken from `socket.gethostname()` as-is
 This is *usually* the hostname without the domain name, but *might* be the fully qualified domain name (FQDN), depending on your operating system.
 
 It is not possible to override this local hostname using extra_vars (`-e` on the command line)
-and/or environment variables. The reason is technical. An Ansible plugin does not have access to other variables (some may not be defined). It may be possible to parse `ansible.context.CLIARGS['extra_vars']` or `os.environ``, but that is very error-prone, and is not implemented.
+and/or environment variables. The reason is technical. An Ansible plugin does not have access to other variables (some may not be defined). It may be possible to parse `ansible.context.CLIARGS['extra_vars']` or `os.environ`, but that is very error-prone, and is not implemented.
 
 ## License
 
