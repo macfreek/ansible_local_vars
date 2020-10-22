@@ -38,11 +38,7 @@ class VarsModule(BaseVarsPlugin):
         - Files are restricted by extension to one of .yaml, .json, .yml or no extension.
         - Hidden (starting with '.') and backup (ending with '~') files and directories are ignored.
         - Useful if you have multiple Ansible controllers with minimal differences.
-    options:
-        - hostname:
-            description: hostname for which to load variables.
-            required: false
-            default: output of hostname(1)
+        - Install this plugin in <your Ansible directory>/vars_plugins/local_vars.py
     """
 
     def get_vars(self, loader, path, entities):
@@ -51,7 +47,15 @@ class VarsModule(BaseVarsPlugin):
         super(VarsModule, self).get_vars(loader, path, entities)
 
         try:
-            # TODO: first check hostname variable. This is useful to override hostname on the command line with the -e option.
+            # NOTE: hostname is currently ALWAYS set to socket.gethostname().
+            # It is not possible to override these using extra_vars (`-e` on the command line)
+            # and/or environment variables.
+            # 
+            # The reason is technical: this plugin does not have access to
+            # VarManager._extra_vars in any way (via self, loader, path, or entities variables).
+            # It may be possible to parse ansible.context.CLIARGS['extra_vars'] or os.environ,
+            # but that is very error-prone, and gives too much overhead.
+            
             hostname = socket.gethostname()
             data = { "local_hostname": hostname }
 
